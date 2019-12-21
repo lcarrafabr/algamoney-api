@@ -14,9 +14,18 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	public Pessoa atualizarPessoa(Long codigo, Pessoa pessoa) {
+	/**Busca a pessoa pelo ID e já verifica se o codigo é invalido (se invalido retorna 404 Not Found)*/
+	private Pessoa buscarPessoaPeloCodigo(Long codigo) {
 		
 		Pessoa pessoaSalva = pessoaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		
+		return pessoaSalva;
+	}
+	
+	/**Atualiza pessoa*/
+	public Pessoa atualizarPessoa(Long codigo, Pessoa pessoa) {
+		
+		Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
 		
 		/**BeansUtils pode ser usado para ajudar a tratar od dados para atualziar
 		 * Source: A fonte dos dados - no caso da classe pessoas
@@ -27,9 +36,17 @@ public class PessoaService {
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
 		
 		
-		return pessoaRepository.save(pessoaSalva);
+		return pessoaRepository.save(pessoaSalva);	
+	}
+	
+	
+	/**Atualiza apenas o campo ativo da classe pessoa*/
+	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
+
+		Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
+		pessoaSalva.setAtivo(ativo);
 		
-		
+		pessoaRepository.save(pessoaSalva);
 		
 	}
 
