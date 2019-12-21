@@ -7,14 +7,17 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -65,6 +68,23 @@ public class PessoaResource {
 	public void remover(@PathVariable Long codigo) {
 		
 		pessoaRepository.deleteById(codigo);
+	}
+	
+	@PutMapping("/{codigo}")
+	public Pessoa atualizarPessoa(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa){
+		
+		Pessoa pessoaSalva = pessoaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		
+		/**BeansUtils pode ser usado para ajudar a tratar od dados para atualziar
+		 * Source: A fonte dos dados - no caso da classe pessoas
+		 * target: Para onde irei mandar os dados - no caso para minha variavel pessoaSalva
+		 * ignoreProperties: qual dado devo ignorar - no caso o codigo que é PK*/
+		//BeanUtils.copyProperties(source, target, ignoreProperties);
+		
+		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
+		
+		
+		return this.pessoaRepository.save(pessoaSalva);
 	}
 	
 
