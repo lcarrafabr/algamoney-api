@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -37,6 +38,9 @@ public class PessoaResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private PessoaService pessoaService;
 	
 	@GetMapping
 	public List<Pessoa> listar(){
@@ -71,20 +75,11 @@ public class PessoaResource {
 	}
 	
 	@PutMapping("/{codigo}")
-	public Pessoa atualizarPessoa(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa){
+	public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa){
 		
-		Pessoa pessoaSalva = pessoaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		Pessoa pessoaSalva = pessoaService.atualizarPessoa(codigo, pessoa);
 		
-		/**BeansUtils pode ser usado para ajudar a tratar od dados para atualziar
-		 * Source: A fonte dos dados - no caso da classe pessoas
-		 * target: Para onde irei mandar os dados - no caso para minha variavel pessoaSalva
-		 * ignoreProperties: qual dado devo ignorar - no caso o codigo que é PK*/
-		//BeanUtils.copyProperties(source, target, ignoreProperties);
-		
-		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
-		
-		
-		return this.pessoaRepository.save(pessoaSalva);
+		return ResponseEntity.ok(pessoaSalva);
 	}
 	
 
