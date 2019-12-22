@@ -27,11 +27,11 @@ public class Lancamento {
 	private String descricao;
 	
 	@Column(name = "data_vencimento")
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataVencimento;
 	
 	@Column(name = "data_pagamento")
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataPagamento;
 	
 	private BigDecimal valor;
@@ -102,8 +102,8 @@ public class Lancamento {
 		return tipo;
 	}
 
-	public void setTipoLancamento(TipoLancamento tipoLancamento) {
-		this.tipo = tipoLancamento;
+	public void setTipoLancamento(TipoLancamento tipo) {
+		this.tipo = tipo;
 	}
 
 	public Categoria getCategoria() {
