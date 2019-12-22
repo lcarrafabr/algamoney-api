@@ -1,9 +1,12 @@
 package com.example.algamoney.api.resource;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +24,15 @@ public class LancamentoResource {
 	public List<Lancamento> listar() {
 		return lancamentoRepository.findAll();
 	}
+	
+	
+	@GetMapping("/{codigo}")
+	public ResponseEntity buscarLancamentoPorId(@PathVariable Long codigo) {
+		
+		Optional lancamento = lancamentoRepository.findById(codigo);
+		
+		return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
+	}
+	
 
 }

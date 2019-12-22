@@ -65,5 +65,15 @@ public class CategoriaResource {
 	    return categoria.isPresent() ? 
 	            ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
 	}
+	/**
+	@PostMapping
+	public ResponseEntity<Categoria> criarCategoria2(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
+		
+		Categoria categoriaSalva = categoriaRepository.save(categoria);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
+	}
+	*/
 
 }
