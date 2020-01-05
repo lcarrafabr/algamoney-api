@@ -30,8 +30,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.withClient("angular") // Usuario
 			.secret("angular01") //Senha
 			.scopes("read", "write") //Tipo de leitura
-			.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
-			.accessTokenValiditySeconds(1800); // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
+			//.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
+			.authorizedGrantTypes("password", "refresh_token") // Usar dessa forma quando for criar o refresh token
+			.accessTokenValiditySeconds(20) // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
+			.refreshTokenValiditySeconds(3600 * 24); // <<< tempo de vida do refresh_token
 	}
 	
 	/**sobrescrever o metodo configure(AuthorizationServerEndpointsConfigurer endpoints)*/
@@ -42,6 +44,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints
 		.tokenStore(tokenStore())
 		.accessTokenConverter(accessTokenConverter())
+		.reuseRefreshTokens(false) // <<< colocar essa linha quando fizer o refresh token. Mas não entendi bem essa parte
 		.authenticationManager(authenticationManager); //<<< É onde ficará armazenado o token
 		
 		
