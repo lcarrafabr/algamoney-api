@@ -27,7 +27,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.withClient("angular") // Usuario
 			.secret("angular01") //Senha
 			.scopes("read", "write") //Tipo de leitura
-			.authorizedGrantTypes("passowrd") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
+			.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
 			.accessTokenValiditySeconds(1800); // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
 	}
 	
