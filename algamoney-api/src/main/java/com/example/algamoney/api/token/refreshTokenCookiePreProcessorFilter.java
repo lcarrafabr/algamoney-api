@@ -33,7 +33,6 @@ public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementa
 				&& "refresh_token".equals(req.getParameter("grant_type"))
 				&& req.getCookies() != null) {
 			
-			
 			/**Utilizando a api do Java 8*/
 			/**
 			String refreshToken = 
@@ -58,7 +57,7 @@ public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementa
 			
 		}
 		
-		chain.doFilter(request, response);//Após fazer todos os prodecimentos, continuar o fluxo
+		chain.doFilter(req, response);//Após fazer todos os prodecimentos, continuar o fluxo
 
 	}
 	
