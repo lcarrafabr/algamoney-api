@@ -57,7 +57,7 @@ public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementa
 			
 		}
 		
-		chain.doFilter(req, response);//Após fazer todos os prodecimentos, continuar o fluxo
+		chain.doFilter(req, response);//Após fazer todos os prodecimentos, continuar o fluxo.
 
 	}
 	
