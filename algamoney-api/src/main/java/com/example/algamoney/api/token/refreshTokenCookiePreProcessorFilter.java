@@ -43,10 +43,10 @@ public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementa
 			            .orElse(null);
 			
 			req = new MyServletRequestWrapper(req, refreshToken);
-			
 			*/
-			/**Usando o for normal*/
 			
+			/**Usando o for normal*/
+			///**
 			for(Cookie cookie : req.getCookies()) {
 				
 				if(cookie.getName().equals("refreshToken")) {
@@ -54,6 +54,7 @@ public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementa
 					req = new MyServletRequestWrapper(req, refreshToken);
 				}
 			}
+			//*/
 			
 		}
 		
