@@ -31,13 +31,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		
 		clients.inMemory()
-			.withClient("angular") // Usuario
-			.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G") //Senha
-			.scopes("read", "write") //Tipo de leitura
-			//.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
-			.authorizedGrantTypes("password", "refresh_token") // Usar dessa forma quando for criar o refresh token
-			.accessTokenValiditySeconds(1800) // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
-			.refreshTokenValiditySeconds(3600 * 24); // <<< tempo de vida do refresh_token
+				.withClient("angular") // Usuario client
+				.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G") //Senha Client
+				.scopes("read", "write") //Tipo de leitura
+				//.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
+				.authorizedGrantTypes("password", "refresh_token") // Usar dessa forma quando for criar o refresh token
+				.accessTokenValiditySeconds(1800) // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
+				.refreshTokenValiditySeconds(3600 * 24) // <<< tempo de vida do refresh_token
+			.and()
+				.withClient("mobile") // Usuario client
+				.secret("$2a$10$G1j5Rf8aEEiGc/AET9BA..xRR.qCpOUzBZoJd8ygbGy6tb3jsMT9G") //Senha Client (OBS deixei a mesma senha)
+				.scopes("read") //Tipo de leitura
+				//.authorizedGrantTypes("password") // Não entendi mas parece que é a senha que o angular irá passar ou pegar
+				.authorizedGrantTypes("password", "refresh_token") // Usar dessa forma quando for criar o refresh token
+				.accessTokenValiditySeconds(1800) // <<< quantos segundos esse token ficara ativo no caso 1800 / 60 = 30 minutos
+				.refreshTokenValiditySeconds(3600 * 24); // <<< tempo de vida do refresh_token;
 	}
 	
 	/**sobrescrever o metodo configure(AuthorizationServerEndpointsConfigurer endpoints)*/
