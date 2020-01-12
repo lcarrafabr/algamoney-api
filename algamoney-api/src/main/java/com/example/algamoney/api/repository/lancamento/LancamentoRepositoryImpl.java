@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.repository.filter.LancamentoFilter;
+import com.example.algamoney.api.repository.projection.ResumoLancamento;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 	
@@ -81,7 +82,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 	}
 	
 	/**Usado para paginação*/
-	private void adicionarRestricoesDePaginacao(TypedQuery<Lancamento> query, Pageable pageable) {
+	private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
 		
 		int paginaAtual = pageable.getPageNumber();
 		int totalRegostrosPorPagina = pageable.getPageSize();
@@ -107,6 +108,36 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		criteria.select(builder.count(root));
 		
 		return manager.createQuery(criteria).getSingleResult();
+	}
+
+
+	@Override
+	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<ResumoLancamento> criteria = builder.createQuery(ResumoLancamento.class);
+		Root<Lancamento> root = criteria.from(Lancamento.class);
+		
+		criteria.select(builder.construct(ResumoLancamento.class, 
+				root.get("codigo"),
+				root.get("descricao"),
+				root.get("dataVencimento"),
+				root.get("dataPagamento"),
+				root.get("valor"),
+				root.get("tipo")
+				//root.get("categoria"),
+				//root.get("pessoa")
+				));
+		
+		Predicate [] predicates = criarRestricoes(lancamentoFilter, builder, root);
+		criteria.where(predicates);
+		
+		TypedQuery<ResumoLancamento> query = manager.createQuery(criteria);
+		
+		/**Essas linhas abaixo foram criadas após a paginação*/
+		adicionarRestricoesDePaginacao(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(lancamentoFilter));
 	}
 
 }
