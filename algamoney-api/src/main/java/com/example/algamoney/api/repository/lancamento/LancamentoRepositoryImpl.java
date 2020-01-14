@@ -124,9 +124,9 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 				root.get("dataVencimento"),
 				root.get("dataPagamento"),
 				root.get("valor"),
-				root.get("tipo")
-				//root.get("categoria"),
-				//root.get("pessoa")
+				root.get("tipo"),
+				root.get("categoria").get("nome"), //Uso a clase Categoria
+				root.get("pessoa").get("nome")     //Uso a classe Pessoa
 				));
 		
 		Predicate [] predicates = criarRestricoes(lancamentoFilter, builder, root);

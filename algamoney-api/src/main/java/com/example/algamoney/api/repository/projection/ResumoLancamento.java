@@ -16,7 +16,7 @@ public class ResumoLancamento {
 	private String categoria;
 	private String pessoa;
 	
-	/**
+	///**
 	public ResumoLancamento(Long codigo, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
 			BigDecimal valor, TipoLancamento tipo, String categoria, String pessoa) {
 		this.codigo = codigo;
@@ -28,14 +28,14 @@ public class ResumoLancamento {
 		this.categoria = categoria;
 		this.pessoa = pessoa;
 	}
-	*/
+	//*/
 	
 	
 
 	public Long getCodigo() {
 		return codigo;
 	}
-
+/*
 	public ResumoLancamento(Long codigo, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
 			BigDecimal valor, TipoLancamento tipo) {
 		super();
@@ -46,7 +46,7 @@ public class ResumoLancamento {
 		this.valor = valor;
 		this.tipo = tipo;
 	}
-
+*/
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
