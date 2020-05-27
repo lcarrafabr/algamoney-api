@@ -19,8 +19,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 @Profile("oauth-security")
-@Configuration  // A anotação @EnableWebSecurity já possui a @Configuration. Mas coloco para lembrar que é uma classe de configuração
 @EnableWebSecurity
+@Configuration  // A anotação @EnableWebSecurity já possui a @Configuration. Mas coloco para lembrar que é uma classe de configuração
 @EnableResourceServer //<<<< Incluir para implementar o oauth2
 @EnableGlobalMethodSecurity(prePostEnabled = true) // <<< Após passar para os usuarios para o banco, habilitar a seguranda dos metodos
 //public class ResourceServerConfig extends WebSecurityConfigurerAdapter{  //<< Antes de implementar o oauth2
@@ -53,11 +53,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers("/categorias").permitAll()
 		.anyRequest().authenticated()
-		.and()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //Sem manter sessão
-		.and()
-		.csrf().disable();
-			
+	.and()
+	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //Sem manter sessão
+	.and()
+	.csrf().disable();
+		
 		
 		/**versão antiga antes do oauth
 		
