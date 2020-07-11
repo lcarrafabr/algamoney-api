@@ -1,10 +1,12 @@
 package com.example.algamoney.api.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Endereco {
 
+	@Column(length = 255)
 	private String logradouro;
 
 	private String numero;

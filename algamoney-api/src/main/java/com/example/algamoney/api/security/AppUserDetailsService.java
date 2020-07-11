@@ -30,7 +30,9 @@ public class AppUserDetailsService implements UserDetailsService{
 		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuario e/ou senha incorretos"));
 		
 		//return new User(username, password, authorities);  // <<< Exemplo da opção a escolher
-		return new User(email, usuario.getSenha(), getPermissoes(usuario)); // << Criar manualmente o getPermissoes(usuario)
+		//return new User(email, usuario.getSenha(), getPermissoes(usuario)); // << Criar manualmente o getPermissoes(usuario)
+		
+		return new UsuarioSistema(usuario, getPermissoes(usuario));
 	}
 
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
