@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import com.example.algamoney.api.dto.LancamentoEstatisticaCategoria;
 import com.example.algamoney.api.dto.LancamentoEstatisticaDia;
+import com.example.algamoney.api.dto.lancamentoestatisticaPessoa;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Lancamento_;
 import com.example.algamoney.api.repository.filter.LancamentoFilter;
@@ -91,6 +92,36 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 				root.get(Lancamento_.DATA_VENCIMENTO));
 		
 		TypedQuery<LancamentoEstatisticaDia> typedQuery = manager.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
+	@Override
+	public List<lancamentoestatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+		
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<lancamentoestatisticaPessoa> criteriaQuery = criteriaBuilder.createQuery(lancamentoestatisticaPessoa.class);
+		
+		/**Aqui começa o SQL*/
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(lancamentoestatisticaPessoa.class, 
+				root.get(Lancamento_.TIPO),
+				root.get(Lancamento_.PESSOA),
+				criteriaBuilder.sum(root.get(Lancamento_.VALOR))));
+		
+		criteriaQuery.where(
+				
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.DATA_VENCIMENTO), inicio),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.DATA_VENCIMENTO), fim)
+				
+				);
+		
+		criteriaQuery.groupBy(root.get(Lancamento_.TIPO),
+				root.get(Lancamento_.PESSOA));
+		
+		TypedQuery<lancamentoestatisticaPessoa> typedQuery = manager.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
 	}
