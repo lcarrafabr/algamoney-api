@@ -42,19 +42,22 @@
 		</dependency>
 		
 		<!-- MYSQL -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.40</version>
-			<scope>runtime</scope>
-		</dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+    <version>8.0.17</version>
+</dependency>
+
 		
 		<!-- Migrações Flyway -->
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-core</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 	    	<groupId>org.apache.commons</groupId>

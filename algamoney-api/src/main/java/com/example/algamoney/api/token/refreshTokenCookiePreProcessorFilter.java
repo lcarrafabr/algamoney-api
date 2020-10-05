@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.apache.catalina.util.ParameterMap;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+@Profile("oauth-security")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE) //Coloca como prioridade alta pois tem que ser analisado a requisição antes de todas as outras
 public class refreshTokenCookiePreProcessorFilter implements Filter{//Implementar o Filter do javax.servlet e mandar criar os implements
