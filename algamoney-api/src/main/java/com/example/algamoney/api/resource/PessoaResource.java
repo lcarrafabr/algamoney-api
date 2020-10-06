@@ -53,7 +53,9 @@ public class PessoaResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')")
 	public ResponseEntity<Pessoa> criarPessoa(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response){
 		
-		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		//Pessoa pessoaSalva = pessoaRepository.save(pessoa);  << após criar o model de contatos essa linha foi alterada
+		
+		Pessoa pessoaSalva = pessoaService.salvar(pessoa);
 		
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
 		

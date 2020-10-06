@@ -27,13 +27,18 @@ public class PessoaService {
 		
 		Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
 		
+		pessoaSalva.getContatos().clear();
+		pessoaSalva.getContatos().addAll(pessoa.getContatos());
+		
+		pessoaSalva.getContatos().forEach(c -> c.setPessoa(pessoaSalva)); 
+		
 		/**BeansUtils pode ser usado para ajudar a tratar od dados para atualziar
 		 * Source: A fonte dos dados - no caso da classe pessoas
 		 * target: Para onde irei mandar os dados - no caso para minha variavel pessoaSalva
 		 * ignoreProperties: qual dado devo ignorar - no caso o codigo que é PK*/
 		//BeanUtils.copyProperties(source, target, ignoreProperties);
 		
-		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
+		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo", "contatos");
 		
 		
 		return pessoaRepository.save(pessoaSalva);	
@@ -48,6 +53,13 @@ public class PessoaService {
 		
 		pessoaRepository.save(pessoaSalva);
 		
+	}
+	
+	public Pessoa salvar(Pessoa pessoa) {
+		
+		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa));
+		
+		return pessoaRepository.save(pessoa);
 	}
 
 }
