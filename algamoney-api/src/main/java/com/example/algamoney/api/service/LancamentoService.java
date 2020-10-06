@@ -3,6 +3,7 @@ package com.example.algamoney.api.service;
 import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,10 +19,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoney.api.dto.lancamentoestatisticaPessoa;
+import com.example.algamoney.api.mail.Mailer;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.model.Usuario;
 import com.example.algamoney.api.repository.LancamentoRepository;
 import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.repository.UsuarioRepository;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -31,12 +35,20 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class LancamentoService {
+	
+	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private Mailer mailer;
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
 		
@@ -100,10 +112,18 @@ public class LancamentoService {
 	    }
 	}
 	
-	@Scheduled(cron = "0 0 6 * * *")
+	//@Scheduled(cron = "0 0 6 * * *")
+	@Scheduled(fixedDelay = 1000 * 60 * 30)
 	public void avisarSobreLancamentosVencidos() {
 		
-		System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>  Método sendo executado...");
+		List<Lancamento> vencidos = lancamentoRepository.findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
+		
+		List<Usuario> destinatarios = usuarioRepository.findByPermissoesDescricao(DESTINATARIOS);
+		
+		mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
+		
+		System.out.println(LocalDateTime.now() + " INFO " + " Envio de e-mail");
+		
 		
 	}
 
