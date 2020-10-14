@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.algamoney.api.dto.Anexo;
 import com.example.algamoney.api.dto.LancamentoEstatisticaCategoria;
 import com.example.algamoney.api.dto.LancamentoEstatisticaDia;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
@@ -53,8 +54,7 @@ import com.example.algamoney.api.storage.S3;
 @RequestMapping("/lancamentos")
 public class LancamentoResource {
 	
-	@Autowired
-	private S3 s3;
+	
 	
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
@@ -68,26 +68,19 @@ public class LancamentoResource {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private S3 s3;
 	
-	
-	
+		
 	@PostMapping("/anexo")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
-	private String uploadAnexo(@RequestParam MultipartFile anexo)  {
-		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ANTES DE ANEXAR " + anexo);
-		
-		if(anexo.isEmpty()) {
-			System.out.println("O anexo está vazio");
-		}else {
-			System.out.println("O anexo não está vazio");
-		}
+	public Anexo uploadAnexo(@RequestParam MultipartFile anexo)  {
 		
 		String nome = s3.salvarTemporariamente(anexo);
 		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + nome);
-		
-		return nome;
+		System.out.println(s3);
+				
+		return new Anexo(nome, s3.configurarURL(nome));
 	}
 	
 	/**
