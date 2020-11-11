@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,7 @@ import com.example.algamoney.api.repository.projection.ResumoLancamento;
 import com.example.algamoney.api.service.LancamentoService;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 import com.example.algamoney.api.storage.S3;
+import com.example.algamoney.api.utils.FuncoesUtils;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -180,6 +183,23 @@ public class LancamentoResource {
 		
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE).body(relatorio);
 		
+	}
+	
+	@GetMapping("/estatistica/filtro-por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public List<LancamentoEstatisticaDia> filtroPorDias(@RequestParam("dataMesRef") String dataMesref){
+		
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		//LocalDate dateTime = LocalDate.parse(dataMesref, formatter);
+		
+		return this.lancamentoRepository.porDia(FuncoesUtils.converterStringParaLocalDateTime(dataMesref));
+	}
+	
+	@GetMapping("/estatistica/filtro-por-categoria")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public List<LancamentoEstatisticaCategoria> filtroPorCategoria(@RequestParam("dataMesRef") String dataMesref){
+		
+		return this.lancamentoRepository.porCategoria(FuncoesUtils.converterStringParaLocalDateTime(dataMesref));
 	}
 
 }
